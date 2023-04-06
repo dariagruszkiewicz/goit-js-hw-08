@@ -19,26 +19,7 @@
       allowfullscreen
       allow="autoplay; encrypted-media"
     ></iframe>
-
     <script src="https://player.vimeo.com/api/player.js"></script>
-    <script>
-      const iframe = document.querySelector('iframe');
-      const player = new Vimeo.Player(iframe);
-
-      player.on('timeupdate', function (time) {
-        localStorage.setItem(
-          'videoplayer-current-time',
-          JSON.stringify(time.seconds)
-        );
-        console.log('czas odtwarzania:', time.seconds);
-      });
-
-      player.getVideoTitle().then(function (title) {
-        console.log('title:', title);
-      });
-
-      player.setCurrentTime(localStorage.getItem('videoplayer-current-time'));
-    </script>
     <script src="js/02-video.js" type="module"></script>
   </body>
 </html>
