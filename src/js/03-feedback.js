@@ -1,25 +1,35 @@
-{
-  /* <form class="feedback-form" autocomplete="off">
-      <label>
-        Email
-        <input type="email" name="email" autofocus />
-      </label>
-      <label>
-        Message
-        <textarea name="message" rows="8"></textarea>
-      </label>
-      <button type="submit">Submit</button>
-    </form> */
-}
+import throttle from 'lodash.throttle';
 
 const formEl = document.querySelector('.feedback-form');
-console.log(formEl);
 const inputEl = document.querySelector("input[type='email']");
-console.log(inputEl.value);
+const textareaEl = document.querySelector("textarea[name='message']");
 
-const addToLocalStorage = localStorage.setItem(
-  'feedback-form-state',
-  inputEl.value
-);
-console.log(addToLocalStorage);
-formEl.addEventListener('submit', () => {});
+const addToLocalStorage = () => {
+  localStorage.setItem(
+    'feedback-form-state',
+    JSON.stringify({
+      email: inputEl.value,
+      message: textareaEl.value,
+    })
+  );
+};
+const savedData = localStorage.getItem('feedback-form-state');
+const parsedData = JSON.parse(savedData);
+console.log(parsedData);
+
+const updateFields = () => {
+  inputEl.value.textContent = parsedData.email || '';
+  textareaEl.value.textContent = parsedData.message || '';
+};
+
+formEl.addEventListener('input', updateFields, addToLocalStorage);
+
+formEl.addEventListener('submit', () => {
+  localStorage.clear();
+  inputEl.value = '';
+  textareaEl.value = '';
+  console.log({
+    email: inputEl.value,
+    message: textareaEl.value,
+  });
+});
